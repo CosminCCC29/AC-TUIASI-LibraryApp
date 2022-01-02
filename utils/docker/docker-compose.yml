@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:  
+  
+  mysql:
+    build:
+      context: ../sql/
+      dockerfile: ../sql/Dockerfile.mysql
+    image: "mysql-server:latest"
+    environment:
+      MYSQL_DATABASE: bookstorage
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME_1: bookstorage_web_user
+      MYSQL_USERNAME_2: bookstorage_db_user
+      MYSQL_USERPASS_1: 134679bookstorageWebUser!
+      MYSQL_USERPASS_2: 134679bookstorageDbUser!
+
+  bookservice:
+    build: ../../BookShelfService/
+    image: bookshelfservice
+    ports: 
+      - 8080:8080
+    command: "java -jar app.jar"
+    environment: 
+      MYSQL_HOST: mysql
+      MYSQL_USER: bookstorage_db_user
+      MYSQL_PASSWORD: 134679bookstorageDbUser!
+    depends_on:
+      - "mysql"
+  
+  orderservice:
+    build: ../../OrderService/
+    image: orderservice
+    ports:
+      - 8081:8080
+    command: "java -jar app.jar"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: bookstorage_db_user
+      MYSQL_PASSWORD: 134679bookstorageDbUser!
+    depends_on:
+      - "mysql"

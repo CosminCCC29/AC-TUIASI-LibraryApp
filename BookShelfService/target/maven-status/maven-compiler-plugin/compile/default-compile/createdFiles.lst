@@ -1,0 +1,17 @@
+com/example/app/controllers/BookController.class
+com/example/app/models/dbentities/BookEntity.class
+com/example/app/controllers/AuthorController.class
+com/example/app/models/dtos/Author.class
+com/example/app/interfaces/AuthorServiceInterface.class
+com/example/app/models/dtos/AuthorBookJoin.class
+com/example/app/services/BookService.class
+com/example/app/models/dbentities/primarykeys/AuthorsBooksPK.class
+com/example/app/interfaces/BookServiceInterface.class
+com/example/app/services/AuthorService.class
+com/example/app/models/dbentities/AuthorBookEntity.class
+com/example/app/repositories/AuthorBookRepository.class
+com/example/app/BookShelfService.class
+com/example/app/repositories/AuthorRepository.class
+com/example/app/models/dtos/Book.class
+com/example/app/repositories/BookRepository.class
+com/example/app/models/dbentities/AuthorEntity.class

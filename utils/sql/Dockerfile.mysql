@@ -1,0 +1,4 @@
+FROM mysql:5.7
+COPY ./create_users_script.sh /docker-entrypoint-initdb.d/script1.sh
+COPY ./create_bookshelf_tables_script.sql /docker-entrypoint-initdb.d/script2.sql
+COPy ./populate_bookshelf_tables_script.sql /docker-entrypoint-initdb.d/script3.sql
