@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface AuthorBookRepository extends CrudRepository<AuthorBookEntity, AuthorsBooksPK> {
 
     @Query
-    (value = "SELECT * FROM authors_books WHERE books_isbn = :isbn", nativeQuery = true)
+            (value = "SELECT * FROM authors_books WHERE books_isbn = :isbn", nativeQuery = true)
     Iterable<AuthorBookEntity> findBookAuthors(@Param(value = "isbn") String isbn);
 
 

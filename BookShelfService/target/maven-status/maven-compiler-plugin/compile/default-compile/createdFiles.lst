@@ -1,8 +1,8 @@
 com/example/app/controllers/BookController.class
 com/example/app/models/dbentities/BookEntity.class
 com/example/app/controllers/AuthorController.class
-com/example/app/models/dtos/Author.class
 com/example/app/interfaces/AuthorServiceInterface.class
+com/example/app/models/dtos/Author.class
 com/example/app/models/dtos/AuthorBookJoin.class
 com/example/app/services/BookService.class
 com/example/app/models/dbentities/primarykeys/AuthorsBooksPK.class

@@ -16,8 +16,7 @@ public class AuthorBookJoin {
     private String books_ISBN;
     private int author_index;
 
-    public AuthorBookJoin(AuthorBookEntity authorBookEntity)
-    {
+    public AuthorBookJoin(AuthorBookEntity authorBookEntity) {
         this.authors_id = authorBookEntity.getAuthorBookPK().getAuthors_id();
         this.books_ISBN = authorBookEntity.getAuthorBookPK().getBooks_ISBN();
         this.author_index = authorBookEntity.getAuthor_index();

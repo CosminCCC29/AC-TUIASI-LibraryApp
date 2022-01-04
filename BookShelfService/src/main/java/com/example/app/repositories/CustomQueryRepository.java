@@ -3,9 +3,7 @@ package com.example.app.repositories;
 import com.example.app.repositories.query.BasicQueryCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,10 +12,9 @@ import java.util.List;
 public class CustomQueryRepository {
 
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-    public <T, Mapper extends RowMapper<T>> List<T> getEntitesByCriteria(BasicQueryCriteria basicQueryCriteria, Mapper mapper)
-    {
-        return namedParameterJdbcTemplate.query(basicQueryCriteria.createQuery(), basicQueryCriteria.getParams(), mapper);
+    public <T, Mapper extends RowMapper<T>> List<T> getEntitesByCriteria(BasicQueryCriteria basicQueryCriteria, Mapper mapper) {
+        return jdbcTemplate.query(basicQueryCriteria.createQuery(), basicQueryCriteria.getQueryParams().values().toArray(new Object[0]), mapper);
     }
 }

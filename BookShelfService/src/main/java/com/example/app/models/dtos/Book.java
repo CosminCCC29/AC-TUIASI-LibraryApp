@@ -31,18 +31,4 @@ public class Book {
         this.description = bookEntity.getDescription();
         this.stock = bookEntity.getStock();
     }
-
-    @Override
-    public String toString() {
-        String bookToString = "{" +
-                "'ISBN':'" + ISBN + '\'' +
-                ",'title':'" + title + '\'' +
-                ",'genre':'" + genre + '\'' +
-                ",'publisher':'" + publisher + '\'' +
-                ",'year':" + year +
-                ",'price':" + price +
-                ",'description':'" + description + '\'' +
-                '}';
-        return bookToString.replace('\'', '"');
-    }
 }

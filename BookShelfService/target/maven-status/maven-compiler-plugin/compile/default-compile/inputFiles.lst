@@ -2,8 +2,8 @@
 /home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/models/dtos/AuthorBookJoin.java
 /home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/repositories/mappers/BookRowMapper.java
 /home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/models/dtos/Book.java
+/home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/models/dtos/BriefBook.java
 /home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/repositories/query/BasicQueryCriteria.java
-/home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/views/BookModelAssembler.java
 /home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/models/dtos/Author.java
 /home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/services/BookService.java
 /home/Cosmin29/Projects/LibraryApp/BookShelfService/src/main/java/com/example/app/services/AuthorService.java

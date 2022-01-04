@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +46,7 @@ public class BookService implements BookServiceInterface {
 
     @Override
     public Optional<Book> getBook(String ISBN) {
-         return bookRepository.findById(ISBN).map(Book::new);
+        return bookRepository.findById(ISBN).map(Book::new);
     }
 
     @Override
@@ -81,44 +83,44 @@ public class BookService implements BookServiceInterface {
     public List<AuthorBookJoin> postAuthorsToBook(String ISBN, List<Integer> authors_ids) throws Exception {
         Optional<BookEntity> bookEntityOptional = bookRepository.findById(ISBN);
 
-        if(bookEntityOptional.isPresent())
-        {
-            try{
+        if (bookEntityOptional.isPresent()) {
+            try {
                 int startIndex = ((List<AuthorBookEntity>) authorBookRepository.findBookAuthors(ISBN)).size() + 1;
                 List<AuthorBookEntity> authorBookEntities = new ArrayList<>();
-                for(int i = 0; i < authors_ids.size(); ++i)
+                for (int i = 0; i < authors_ids.size(); ++i)
                     authorBookEntities.add(new AuthorBookEntity(authors_ids.get(i), ISBN, startIndex + i));
 
                 authorBookRepository.saveAll(authorBookEntities);
                 return ((List<AuthorBookEntity>) authorBookRepository.findBookAuthors(ISBN)).stream().map(AuthorBookJoin::new).collect(Collectors.toList());
                 //return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("self_uri", uri, "parent_url", parentURL, "book_authors", authorBookRepository.findBookAuthors(ISBN)));
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 throw new Exception("Incorect body format or one of the authors does not exists");
                 //return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("Error cause", "Incorect body format or one of the authors does not exists"));
             }
-        }
-        else {
+        } else {
             throw new Exception("Book does not exists");
         }
-            // return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("Error cause", "Book does not exists"));
+        // return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("Error cause", "Book does not exists"));
     }
 
     @Override
     public List<Book> updateBooksStock(List<BookAndStock> bookAndStockList, Boolean addingStock) throws Exception {
+
+        List<BookAndStock> bookAndStocks = bookAndStockList.stream().filter(bookAndStock -> bookAndStock.getStock() <= 0).collect(Collectors.toList());
+        if(bookAndStocks.isEmpty())
+            throw new Exception("Invalid order. Invalid number of products requested.");
+
         // Getting books ids from
         List<String> bookIds = bookAndStockList.stream().map(BookAndStock::getISBN).collect(Collectors.toList());
         // Getting the books with these ids
         List<BookEntity> bookList = (List<BookEntity>) bookRepository.findAllById(bookIds);
 
         // There are book ids that does not correspond to a book
-        if(bookList.size() != bookIds.size())
+        if (bookList.size() != bookIds.size())
             throw new Exception("There are book ids that does not correspond to a book");
 
         boolean availableStockForAll = true;
-        for(int i = 0; i < bookList.size(); ++i)
-        {
+        for (int i = 0; i < bookList.size(); ++i) {
             int newStock = bookList.get(i).getStock() - bookAndStockList.get(i).getStock();
             availableStockForAll &= (newStock >= 0);
             bookList.get(i).setStock(newStock);
@@ -130,9 +132,7 @@ public class BookService implements BookServiceInterface {
         try {
             bookRepository.saveAll(bookList);
             return bookList.stream().map(Book::new).collect(Collectors.toList());
-        }
-        catch (Exception exception)
-        {
+        } catch (Exception exception) {
             throw new Exception("Not enough stock for all the products");
         }
     }

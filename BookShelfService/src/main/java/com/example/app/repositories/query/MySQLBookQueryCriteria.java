@@ -2,9 +2,7 @@ package com.example.app.repositories.query;
 
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
-import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MySQLBookQueryCriteria extends BasicQueryCriteria {
@@ -16,8 +14,7 @@ public class MySQLBookQueryCriteria extends BasicQueryCriteria {
     private final Float price;
     private final String description;
 
-    public MySQLBookQueryCriteria(Map<String, String> params)
-    {
+    public MySQLBookQueryCriteria(Map<String, String> params) {
         super(params);
 
         title = params.get("title");
@@ -27,46 +24,39 @@ public class MySQLBookQueryCriteria extends BasicQueryCriteria {
         price = Floats.tryParse(params.getOrDefault("price", ""));
         description = params.get("description");
 
-        if(title != null) this.params.put("title", title);
-        if(genre != null) this.params.put("genre", genre);
-        if(publisher != null) this.params.put("genre", publisher);
-        if(year != null) this.params.put("year", year);
-        if(price != null) this.params.put("price", price);
-        if(description != null) this.params.put("description", description);
+        if (title != null) this.queryParams.put("title", title);
+        if (genre != null) this.queryParams.put("genre", genre);
+        if (publisher != null) this.queryParams.put("genre", publisher);
+        if (year != null) this.queryParams.put("year", year);
+        if (price != null) this.queryParams.put("price", price);
+        if (description != null) this.queryParams.put("description", description);
     }
 
     @Override
     public String createQuery() {
         StringBuilder queryBuilder = new StringBuilder();
 
-        if(verbose)
+/*        if(verbose)
             queryBuilder.append("SELECT isbn, title, genre FROM books");
         else
-            queryBuilder.append("SELECT * FROM books");
+            queryBuilder.append("SELECT * FROM books");*/
+
+        queryBuilder.append("SELECT * FROM books");
 
         // Building criteria for query
         StringBuilder criteriaBuilder = new StringBuilder();
-        if (exactMatch)
-        {
-            for(Map.Entry<String, Object> e : this.params.entrySet())
-            {
-                if(e.getKey() == "offset" || e.getKey() == "items_per_page")
-                    continue;
-                criteriaBuilder.append(" AND " + e.getKey() + "=:" + e.getKey());
+        if (exactMatch) {
+            for (Map.Entry<String, Object> paramEntry : this.queryParams.entrySet()) {
+                criteriaBuilder.append(" AND ").append(paramEntry.getKey()).append("= ").append("?");
             }
-        }
-        else
-        {
-            for(Map.Entry<String, Object> e : this.params.entrySet())
-            {
-                if(e.getKey() == "offset" || e.getKey() == "items_per_page")
-                    continue;
-                criteriaBuilder.append(" AND " + e.getKey() + " LIKE '%:"+e.getKey()+"%'");
+        } else {
+            for (Map.Entry<String, Object> paramEntry : this.queryParams.entrySet()) {
+                criteriaBuilder.append(" AND ").append(paramEntry.getKey()).append(" LIKE ?");
+                this.queryParams.put(paramEntry.getKey(), "%" + paramEntry.getValue() + "%");
             }
         }
 
-        if(offset != null)
-        {
+        if (offset != null) {
             criteriaBuilder.append(" ORDER BY isbn LIMIT :items_per_page OFFSET :offset");
         }
 
@@ -77,7 +67,6 @@ public class MySQLBookQueryCriteria extends BasicQueryCriteria {
         */
 
         queryBuilder.append(criteriaBuilder);
-        String res = queryBuilder.toString().replace("books AND", "books WHERE");
-        return res;
+        return queryBuilder.toString().replace("books AND", "books WHERE");
     }
 }

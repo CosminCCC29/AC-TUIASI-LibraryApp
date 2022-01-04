@@ -21,14 +21,4 @@ public class Author {
         this.firstname = authorEntity.getFirstname();
         this.lastname = authorEntity.getLastname();
     }
-
-    @Override
-    public String toString() {
-        String authorToString = "{" +
-                "'id':'" + id +
-                ",'firstname':'" + firstname + '\'' +
-                ",'lastname':'" + lastname + '\'' +
-                '}';
-        return authorToString.replace('\'', '"');
-    }
 }
