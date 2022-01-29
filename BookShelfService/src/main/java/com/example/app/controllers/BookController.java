@@ -6,6 +6,10 @@ import com.example.app.models.dtos.Book;
 import com.example.app.models.dtos.BookAndStock;
 import com.example.app.models.dtos.BookBrief;
 import com.example.app.repositories.query.MySQLBookQueryCriteria;
+import com.example.app.services.IdentityProviderClient;
+import com.example.wsdl.AuthenticateUserRequest;
+import com.example.wsdl.AuthenticateUserResponse;
+import com.example.wsdl.CredentialsData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,6 +45,9 @@ public class BookController {
 
     @Autowired
     private RepresentationModelAssembler<BookBrief, EntityModel<BookBrief>> bookBriefEntityModelAssembler;
+
+    @Autowired
+    private IdentityProviderClient identityProviderClient;
 
     @Operation(summary = "Get all books with optional filters")
     @ApiResponses(value = {
@@ -136,7 +143,7 @@ public class BookController {
             @ApiResponse(responseCode = "201", description = "Order validated and stock decreased", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BookAndStock.class)))}),
             @ApiResponse(responseCode = "406", description = "Invalid books or not enough stock", content = @Content)
     })
-    @PostMapping("make-order")
+    @PostMapping("/validate-and-confirm-order")
     public ResponseEntity<List<BookAndStock>> confirmOrderStock(@RequestBody List<BookAndStock> bookAndStockList) {
         try {
             List<Book> updatedBooks = bookService.updateBooksStock(bookAndStockList, false);

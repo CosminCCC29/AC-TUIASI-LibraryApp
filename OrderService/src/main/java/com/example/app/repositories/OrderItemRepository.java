@@ -1,21 +1,16 @@
 package com.example.app.repositories;
 
+import com.example.app.Utilities.OrderStatus;
 import com.example.app.interfaces.OrderItemRepositoryInterface;
 import com.example.app.models.dbentities.OrderItemEntity;
 import com.example.app.models.dtos.OrderItem;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.GroupOperation;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-
-import java.util.Map;
-
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.count;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 
 @Repository
@@ -41,6 +36,16 @@ public class OrderItemRepository implements OrderItemRepositoryInterface {
         savedOrderItem.setClientId(orderItem.getClientId());
 
         return savedOrderItem;
+    }
+
+    @Override
+    public long updateOrderStatus(int clientId, int orderId, OrderStatus orderStatus)
+    {
+        Query query = Query.query(Criteria.where("_id").is(orderId));
+        Update update = new Update();
+        update.set("status", orderStatus);
+
+        return mongoTemplate.updateFirst(query, update, "client_"+clientId).getMatchedCount();
     }
 
     @Override

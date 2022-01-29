@@ -1,15 +1,14 @@
 package ro.tuiasi.uac.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-/*
-    DTO class for tokens
-*/
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class Token {
-    private String token;
+    String token;
 }

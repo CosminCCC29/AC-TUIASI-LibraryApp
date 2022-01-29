@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://spring.io/guides/gs-producing-web-service" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://spring.io/guides/gs-producing-web-service" targetNamespace="http://spring.io/guides/gs-producing-web-service">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://spring.io/guides/gs-producing-web-service">
+
+    <!--  ACCOUNT CONTROLLER  -->
+
+    <xs:element name="GetAccountByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GetAccountResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AccountData" type="tns:AccountData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="AddAccountRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AccountData" type="tns:AccountData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="AddAccountResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="AccountData" type="tns:AccountData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteAccountByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteAccountByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="AccountData">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+            <xs:element name="role" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- __________________   -->
+
+    <!--  USER ACCESS CONTROLLER  -->
+
+    <xs:element name="AuthenticateUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="CredentialsData" type="tns:CredentialsData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="AuthenticateUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="TokenAndClaimsData" type="tns:TokenAndClaimsData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ValidateTokenRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="TokenData" type="tns:TokenData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="ValidateTokenResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="TokenAndClaimsData" type="tns:TokenAndClaimsData"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="CredentialsData">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TokenData">
+        <xs:sequence>
+            <xs:element name="token" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TokenAndClaimsData">
+        <xs:sequence>
+            <xs:element name="token" type="xs:string"/>
+            <xs:element name="accountId" type="xs:int"/>
+            <xs:element name="role" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- __________________   -->
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="ValidateTokenRequest">
+    <wsdl:part element="tns:ValidateTokenRequest" name="ValidateTokenRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AuthenticateUserResponse">
+    <wsdl:part element="tns:AuthenticateUserResponse" name="AuthenticateUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AddAccountResponse">
+    <wsdl:part element="tns:AddAccountResponse" name="AddAccountResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DeleteAccountByIdResponse">
+    <wsdl:part element="tns:DeleteAccountByIdResponse" name="DeleteAccountByIdResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AuthenticateUserRequest">
+    <wsdl:part element="tns:AuthenticateUserRequest" name="AuthenticateUserRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AddAccountRequest">
+    <wsdl:part element="tns:AddAccountRequest" name="AddAccountRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DeleteAccountByIdRequest">
+    <wsdl:part element="tns:DeleteAccountByIdRequest" name="DeleteAccountByIdRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ValidateTokenResponse">
+    <wsdl:part element="tns:ValidateTokenResponse" name="ValidateTokenResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetAccountByIdRequest">
+    <wsdl:part element="tns:GetAccountByIdRequest" name="GetAccountByIdRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetAccountResponse">
+    <wsdl:part element="tns:GetAccountResponse" name="GetAccountResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AccountsPort">
+    <wsdl:operation name="ValidateToken">
+      <wsdl:input message="tns:ValidateTokenRequest" name="ValidateTokenRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:ValidateTokenResponse" name="ValidateTokenResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthenticateUser">
+      <wsdl:input message="tns:AuthenticateUserRequest" name="AuthenticateUserRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:AuthenticateUserResponse" name="AuthenticateUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddAccount">
+      <wsdl:input message="tns:AddAccountRequest" name="AddAccountRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:AddAccountResponse" name="AddAccountResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAccountById">
+      <wsdl:input message="tns:DeleteAccountByIdRequest" name="DeleteAccountByIdRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:DeleteAccountByIdResponse" name="DeleteAccountByIdResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountById">
+      <wsdl:input message="tns:GetAccountByIdRequest" name="GetAccountByIdRequest">
+    </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccount">
+      <wsdl:output message="tns:GetAccountResponse" name="GetAccountResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AccountsPortSoap11" type="tns:AccountsPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ValidateToken">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="ValidateTokenRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ValidateTokenResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthenticateUser">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="AuthenticateUserRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="AuthenticateUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddAccount">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="AddAccountRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="AddAccountResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAccountById">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="DeleteAccountByIdRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="DeleteAccountByIdResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountById">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="GetAccountByIdRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccount">
+      <soap:operation soapAction=""/>
+      <wsdl:output name="GetAccountResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AccountsPortService">
+    <wsdl:port binding="tns:AccountsPortSoap11" name="AccountsPortSoap11">
+      <soap:address location="http://localhost:8082/identity-provider"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

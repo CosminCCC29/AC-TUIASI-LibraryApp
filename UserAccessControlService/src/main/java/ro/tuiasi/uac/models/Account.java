@@ -2,11 +2,11 @@ package ro.tuiasi.uac.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /*
     DTO class for user account
@@ -21,6 +21,7 @@ public class Account {
     private Integer id;
     private String email;
     private String password;
+    private String role;
 
     public Account()
     {

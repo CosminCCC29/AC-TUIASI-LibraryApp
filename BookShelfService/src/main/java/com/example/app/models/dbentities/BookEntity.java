@@ -1,6 +1,10 @@
 package com.example.app.models.dbentities;
 
 import com.example.app.models.dtos.Book;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConstructorBinding;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

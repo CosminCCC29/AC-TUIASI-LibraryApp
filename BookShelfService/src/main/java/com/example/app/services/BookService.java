@@ -106,8 +106,9 @@ public class BookService implements BookServiceInterface {
     @Override
     public List<Book> updateBooksStock(List<BookAndStock> bookAndStockList, Boolean addingStock) throws Exception {
 
+        // Checking the bookAndStock objects' stock
         List<BookAndStock> bookAndStocks = bookAndStockList.stream().filter(bookAndStock -> bookAndStock.getStock() <= 0).collect(Collectors.toList());
-        if(bookAndStocks.isEmpty())
+        if(!bookAndStocks.isEmpty())
             throw new Exception("Invalid order. Invalid number of products requested.");
 
         // Getting books ids from
