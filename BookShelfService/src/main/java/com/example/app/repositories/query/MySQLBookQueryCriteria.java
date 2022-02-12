@@ -34,13 +34,8 @@ public class MySQLBookQueryCriteria extends BasicQueryCriteria {
 
     @Override
     public String createQuery() {
+
         StringBuilder queryBuilder = new StringBuilder();
-
-/*        if(verbose)
-            queryBuilder.append("SELECT isbn, title, genre FROM books");
-        else
-            queryBuilder.append("SELECT * FROM books");*/
-
         queryBuilder.append("SELECT * FROM books");
 
         // Building criteria for query
@@ -59,12 +54,6 @@ public class MySQLBookQueryCriteria extends BasicQueryCriteria {
         if (offset != null) {
             criteriaBuilder.append(" ORDER BY isbn LIMIT :items_per_page OFFSET :offset");
         }
-
-        /*
-         todo
-          match=true problema query
-          verbose=true arunca exceptie
-        */
 
         queryBuilder.append(criteriaBuilder);
         return queryBuilder.toString().replace("books AND", "books WHERE");

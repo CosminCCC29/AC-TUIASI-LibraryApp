@@ -2,7 +2,6 @@ package ro.tuiasi.uac.services;
 
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.tuiasi.uac.interfaces.HashingServiceInterface;
 
@@ -10,6 +9,9 @@ import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
+/*
+    Class defined for hashing passwords
+*/
 @Service
 @Primary
 public class MD5HashingService implements HashingServiceInterface {

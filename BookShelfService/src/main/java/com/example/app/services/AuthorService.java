@@ -36,10 +36,8 @@ public class AuthorService implements AuthorServiceInterface {
         try {
             AuthorEntity savedAuthorEntity = authorRepository.save(authorEntity);
             return new Author(savedAuthorEntity);
-            //return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("self_uri", url + "/" + savedAuthorEntity.getId(), "parent_url", url, "author", savedAuthorEntity));
         } catch (Exception exception) {
             throw new Exception(exception.getMessage());
-            //return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("Error cause", exception.getMessage()));
         }
     }
 
@@ -49,8 +47,6 @@ public class AuthorService implements AuthorServiceInterface {
             authorRepository.deleteById(id);
         } catch (DataAccessException dataAccessException) {
             throw new Exception(dataAccessException.getMessage());
-            // return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        //return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

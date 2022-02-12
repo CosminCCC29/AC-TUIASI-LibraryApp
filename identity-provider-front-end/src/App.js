@@ -1,7 +1,7 @@
 import LoginPage from "./components/LoginPage"
 import RegisterPage from "./components/RegisterPage"
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 function App() {
   return (
@@ -13,6 +13,9 @@ function App() {
           </Route>
           <Route exact path="/register">
             <RegisterPage />
+          </Route>
+          <Route path="/">
+            <Redirect to="/login" />
           </Route>
         </Switch>
       </div>

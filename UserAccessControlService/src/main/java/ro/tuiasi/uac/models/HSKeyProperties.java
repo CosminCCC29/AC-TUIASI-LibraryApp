@@ -32,7 +32,5 @@ public class HSKeyProperties {
         // Reading secret key from file
         byte[] keyBytes = fileIOManagerService.readFile(SECRET_KEY_FILE);
         secretKey = new String(keyBytes, StandardCharsets.UTF_8);
-
-        // fileIOManagerService.deleteFile(SECRET_KEY_FILE);
     }
 }

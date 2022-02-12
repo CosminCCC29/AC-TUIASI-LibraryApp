@@ -1,7 +1,7 @@
 com/example/app/controllers/BookController.class
 com/example/wsdl/DeleteAccountByIdResponse.class
-com/example/wsdl/DeleteAccountByIdRequest.class
 com/example/app/controllers/AuthorController.class
+com/example/wsdl/DeleteAccountByIdRequest.class
 com/example/app/models/dtos/Author.class
 com/medium/article/AddAccountRequest.class
 com/example/wsdl/AuthenticateUserRequest.class
@@ -31,6 +31,7 @@ com/example/wsdl/AddAccountResponse.class
 com/medium/article/GetAccountResponse.class
 com/example/wsdl/GetAccountByIdRequest.class
 com/example/app/models/dbentities/BookEntity.class
+com/example/app/configurations/SecurityConfig$1.class
 com/medium/article/AuthenticateUserResponse.class
 com/example/app/interfaces/AuthorServiceInterface.class
 com/example/app/filters/AuthorizationFilter.class

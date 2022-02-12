@@ -5,7 +5,10 @@ import com.example.app.models.dtos.Book;
 import com.example.app.models.dtos.BookAndStock;
 import com.example.app.models.dtos.Token;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

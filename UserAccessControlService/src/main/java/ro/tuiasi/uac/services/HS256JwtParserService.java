@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Service;
 import ro.tuiasi.uac.interfaces.JwtParserServiceInterface;
 
-import java.security.PublicKey;
 import java.util.Date;
 
 /*

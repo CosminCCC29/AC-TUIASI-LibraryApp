@@ -6,16 +6,13 @@ import com.example.app.models.dtos.Book;
 import com.example.app.models.dtos.BookAndStock;
 import com.example.app.models.dtos.BookBrief;
 import com.example.app.repositories.query.MySQLBookQueryCriteria;
-import com.example.app.services.IdentityProviderClient;
-import com.example.wsdl.AuthenticateUserRequest;
-import com.example.wsdl.AuthenticateUserResponse;
-import com.example.wsdl.CredentialsData;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -46,9 +43,6 @@ public class BookController {
     @Autowired
     private RepresentationModelAssembler<BookBrief, EntityModel<BookBrief>> bookBriefEntityModelAssembler;
 
-    @Autowired
-    private IdentityProviderClient identityProviderClient;
-
     @Operation(summary = "Get all books with optional filters")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieves all requested books", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(oneOf = { Book.class, BookBrief.class }))) })
@@ -66,7 +60,7 @@ public class BookController {
         }
     }
 
-    @Operation(summary = "Get a book by ISBN")
+    @Operation(summary = "Get a book by ISBN", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieves the book", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))}),
             @ApiResponse(responseCode = "404", description = "The book does not exists", content = @Content)
@@ -82,7 +76,7 @@ public class BookController {
         }
     }
 
-    @Operation(summary = "Get a set of books by ISBNs")
+    @Operation(summary = "Get a set of books by ISBNs", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieves requested books", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Book.class))) })
     })
@@ -92,7 +86,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(bookModelAssembler.toCollectionModel(listOfBook));
     }
 
-    @Operation(summary = "Store a book with a specific ISBN")
+    @Operation(summary = "Store a book with a specific ISBN", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "The book was created and replaced another book", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))}),
             @ApiResponse(responseCode = "201", description = "A new book was created", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Book.class))}),
@@ -108,7 +102,7 @@ public class BookController {
         }
     }
 
-    @Operation(summary = "Delete a book with a specific ISBN")
+    @Operation(summary = "Delete a book with a specific ISBN", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "The book was deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "The book does not exists", content = @Content)
@@ -123,7 +117,7 @@ public class BookController {
         }
     }
 
-    @Operation(summary = "Add a list of author to a specific book")
+    @Operation(summary = "Add a list of author to a specific book", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Authors were successfully added", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = AuthorBookJoin.class)))}),
             @ApiResponse(responseCode = "406", description = "Incorect body format, one of the authors does not exists or book does not exist", content = @Content)
@@ -138,7 +132,7 @@ public class BookController {
         }
     }
 
-    @Operation(summary = "Make an order")
+    @Operation(summary = "Make an order", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Order validated and stock decreased", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = BookAndStock.class)))}),
             @ApiResponse(responseCode = "406", description = "Invalid books or not enough stock", content = @Content)

@@ -5,8 +5,6 @@ import io.jsonwebtoken.Jws;
 import io.spring.guides.gs_producing_web_service.*;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -15,7 +13,10 @@ import ro.tuiasi.uac.interfaces.AccountServiceInterface;
 import ro.tuiasi.uac.interfaces.HashingServiceInterface;
 import ro.tuiasi.uac.interfaces.JwtFactoryServiceInterface;
 import ro.tuiasi.uac.interfaces.JwtParserServiceInterface;
-import ro.tuiasi.uac.models.*;
+import ro.tuiasi.uac.models.Account;
+import ro.tuiasi.uac.models.Credentials;
+import ro.tuiasi.uac.models.HSKeyProperties;
+import ro.tuiasi.uac.models.Token;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -55,11 +56,10 @@ public class UserAccessController {
         {
             Account account = optionalAccount.get();
             String token = jwtFactoryService.generateToken(new HashMap<>(){{ put("sub", account.getId()); put("role", account.getRole()); }}, hs256KeyProperties.getSecretKey());
-            // return ResponseEntity.status(HttpStatus.CREATED).body(new TokenAndClaims(token, account.getId(), account.getRole()));
 
             TokenAndClaimsData tokenAndClaimsData = new TokenAndClaimsData();
             tokenAndClaimsData.setToken(token);
-            tokenAndClaimsData.setAccountId(account.getId());
+            tokenAndClaimsData.setSub(account.getId());
             tokenAndClaimsData.setRole(account.getRole());
 
             AuthenticateUserResponse authenticateUserResponse = new AuthenticateUserResponse();
@@ -68,7 +68,6 @@ public class UserAccessController {
         }
         else
         {
-            // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             throw new Exception("Invalid credentials!");
         }
     }
@@ -87,21 +86,14 @@ public class UserAccessController {
         }
         catch (Exception exception)
         {
-            // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             throw new Exception("User not authorized!");
         }
 
-        TokenAndClaims tokenAndClaims = new TokenAndClaims();
         try {
-//            tokenAndClaims.setToken(token.getToken());
-//            tokenAndClaims.setAccountId(tokenClaims.getBody().get("sub", Integer.class));
-//            tokenAndClaims.setRole(tokenClaims.getBody().get("role", String.class));
-
-            // return ResponseEntity.status(HttpStatus.OK).body(tokenAndClaims);
 
             TokenAndClaimsData tokenAndClaimsData = new TokenAndClaimsData();
             tokenAndClaimsData.setToken(token.getToken());
-            tokenAndClaimsData.setAccountId(tokenClaims.getBody().get("sub", Integer.class));
+            tokenAndClaimsData.setSub(tokenClaims.getBody().get("sub", Integer.class));
             tokenAndClaimsData.setRole(tokenClaims.getBody().get("role", String.class));
 
             ValidateTokenResponse validateTokenResponse = new ValidateTokenResponse();
@@ -110,7 +102,6 @@ public class UserAccessController {
         }
         catch (Exception exception)
         {
-            // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             throw new Exception("User not authorized!");
         }
     }

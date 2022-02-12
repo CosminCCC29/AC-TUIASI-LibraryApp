@@ -1,18 +1,14 @@
 package com.example.app.filters;
 
 import com.example.app.configurations.SoapClientConfig;
-import com.example.app.models.dtos.Token;
-import com.example.app.models.dtos.TokenAndClaims;
 import com.example.app.services.IdentityProviderClient;
-import com.example.wsdl.*;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.*;
+import com.example.wsdl.TokenData;
+import com.example.wsdl.ValidateTokenRequest;
+import com.example.wsdl.ValidateTokenResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,11 +20,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if(
+                            request.getServletPath().contains("swagger") ||
+                            request.getServletPath().contains("api-docs") ||
+                            (request.getServletPath().equals("/bookshelf/bookstorage/books") && request.getMethod().equals("GET"))
+        )
+        {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         SoapClientConfig soapClientConfig = new SoapClientConfig();
         IdentityProviderClient identityProviderClient = soapClientConfig.articleClient(soapClientConfig.marshaller());
@@ -53,7 +60,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             catch (Exception exception)
             {
                 response.setHeader("error", "Invalid token!");
-                response.sendError(HttpStatus.UNAUTHORIZED.value());
+                response.sendError(FORBIDDEN.value());
                 return;
             }
 

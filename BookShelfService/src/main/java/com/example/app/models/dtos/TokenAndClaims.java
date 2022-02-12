@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TokenAndClaims {
     private String token;
-    private int accountId;
+    private int sub;
     private String role;
 }

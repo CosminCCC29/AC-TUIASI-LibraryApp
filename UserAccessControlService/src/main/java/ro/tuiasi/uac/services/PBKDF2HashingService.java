@@ -4,6 +4,9 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.tuiasi.uac.interfaces.HashingServiceInterface;
 
+/*
+    Class defined for hashing passwords
+*/
 @Service
 public class PBKDF2HashingService implements HashingServiceInterface {
     private Pbkdf2PasswordEncoder encoder;

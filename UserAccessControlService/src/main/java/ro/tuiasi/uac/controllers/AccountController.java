@@ -3,9 +3,6 @@ package ro.tuiasi.uac.controllers;
 import io.spring.guides.gs_producing_web_service.*;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -17,8 +14,6 @@ import ro.tuiasi.uac.models.Account;
 import java.util.Optional;
 
 @Endpoint
-//@RestController
-//@RequestMapping(path = "identity-provider/userinformations/accounts")
 public class AccountController {
 
     private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
@@ -28,41 +23,6 @@ public class AccountController {
 
     @Autowired
     HashingServiceInterface hashingService;
-
-//    @GetMapping(path="/{id}")
-//    public ResponseEntity<Account> getAccountById(@PathVariable Integer id) {
-//        Optional<Account> optionalAccount = this.accountService.getAccountById(id);
-//
-//        if(optionalAccount.isEmpty())
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        else
-//            return ResponseEntity.status(HttpStatus.OK).body(optionalAccount.get());
-//    }
-//
-//    @PostMapping(path="")
-//    public ResponseEntity<?> addAccount(@RequestBody Account account) {
-//
-//        try {
-//            Account createdAccount = accountService.addAccount(account);
-//            return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
-//        }
-//        catch (Exception ex)
-//        {
-//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(ex.getMessage());
-//        }
-//    }
-//
-//    @DeleteMapping(path="/{id}")
-//    public ResponseEntity<?> deleteAccount(@PathVariable Integer id) {
-//
-//        try {
-//            accountService.deleteAccountById(id);
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        }
-//        catch (Exception ex) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
 
     @SneakyThrows
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "GetAccountByIdRequest")
@@ -95,6 +55,7 @@ public class AccountController {
         account.setId(accountData.getId());
         account.setEmail(accountData.getEmail());
         account.setPassword(accountData.getPassword());
+        account.setRole(accountData.getRole());
 
         Account addedAccount = accountService.addAccount(account);
 
@@ -103,6 +64,7 @@ public class AccountController {
         newAccountData.setId(addedAccount.getId());
         newAccountData.setEmail(addedAccount.getEmail());
         newAccountData.setPassword(addedAccount.getPassword());
+        newAccountData.setRole(addedAccount.getRole());
 
         addAccountResponse.setAccountData(newAccountData);
         return addAccountResponse;

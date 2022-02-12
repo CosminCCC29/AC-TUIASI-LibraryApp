@@ -2,7 +2,6 @@ package com.example.app.filters;
 
 import com.example.app.configurations.SoapClientConfig;
 import com.example.app.services.IdentityProviderClient;
-//import com.example.wsdl.*;
 import com.example.wsdl.TokenData;
 import com.example.wsdl.ValidateTokenRequest;
 import com.example.wsdl.ValidateTokenResponse;
@@ -21,11 +20,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if(
+            request.getServletPath().contains("swagger") || request.getServletPath().contains("api-docs")
+        )
+        {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         SoapClientConfig soapClientConfig = new SoapClientConfig();
         IdentityProviderClient identityProviderClient = soapClientConfig.articleClient(soapClientConfig.marshaller());
@@ -50,7 +58,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             catch (Exception exception)
             {
                 response.setHeader("error", "Invalid token!");
-                response.sendError(HttpStatus.UNAUTHORIZED.value());
+                response.sendError(FORBIDDEN.value());
                 return;
             }
 
@@ -58,7 +66,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             if(userRole != null && userRole.length() > 0)
             {
                 Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                // authorities.add(new SimpleGrantedAuthority(userRole));
+                authorities.add(new SimpleGrantedAuthority(userRole));
+
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(null, null, authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

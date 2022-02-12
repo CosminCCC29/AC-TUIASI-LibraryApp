@@ -56,15 +56,9 @@ public class BookService implements BookServiceInterface {
         savedBookEntity.setISBN(ISBN);
 
         // Checking resource and status code
-        // Optional<BookEntity> bookEntityOptional = bookRepository.findById(ISBN);
         try {
             return new Book(bookRepository.save(savedBookEntity));
-/*            if (bookEntityOptional.isPresent())
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-            else
-                return ResponseEntity.status(HttpStatus.CREATED).body(book);*/
         } catch (Exception constraintViolationException) {
-            // return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("Error cause", constraintViolationException.getMessage()));
             throw new Exception(constraintViolationException.getMessage());
         }
     }
@@ -76,7 +70,6 @@ public class BookService implements BookServiceInterface {
         } catch (DataAccessException dataAccessException) {
             throw new Exception("Book does not exists");
         }
-        // return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Override
@@ -92,15 +85,12 @@ public class BookService implements BookServiceInterface {
 
                 authorBookRepository.saveAll(authorBookEntities);
                 return ((List<AuthorBookEntity>) authorBookRepository.findBookAuthors(ISBN)).stream().map(AuthorBookJoin::new).collect(Collectors.toList());
-                //return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("self_uri", uri, "parent_url", parentURL, "book_authors", authorBookRepository.findBookAuthors(ISBN)));
             } catch (Exception exception) {
                 throw new Exception("Incorect body format or one of the authors does not exists");
-                //return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("Error cause", "Incorect body format or one of the authors does not exists"));
             }
         } else {
             throw new Exception("Book does not exists");
         }
-        // return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Map.of("Error cause", "Book does not exists"));
     }
 
     @Override

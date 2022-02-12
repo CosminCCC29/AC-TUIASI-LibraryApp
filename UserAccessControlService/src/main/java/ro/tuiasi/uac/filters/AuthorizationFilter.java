@@ -2,13 +2,9 @@ package ro.tuiasi.uac.filters;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ro.tuiasi.uac.interfaces.JwtParserServiceInterface;
 import ro.tuiasi.uac.models.HSKeyProperties;
@@ -23,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 public class AuthorizationFilter extends OncePerRequestFilter {
@@ -67,7 +64,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             catch (Exception exception)
             {
                 response.setHeader("error", exception.getMessage());
-                response.sendError(UNAUTHORIZED.value());
+                response.sendError(FORBIDDEN.value());
             }
         }
         else

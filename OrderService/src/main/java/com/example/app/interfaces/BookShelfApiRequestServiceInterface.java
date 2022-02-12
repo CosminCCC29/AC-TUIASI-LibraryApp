@@ -5,7 +5,6 @@ import com.example.app.models.dtos.BookAndStock;
 import com.example.app.models.dtos.Token;
 import org.springframework.http.ResponseEntity;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public interface BookShelfApiRequestServiceInterface {

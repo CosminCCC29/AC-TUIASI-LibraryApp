@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -31,7 +32,7 @@ public class AuthorController {
     @Autowired
     private RepresentationModelAssembler<Author, EntityModel<Author>> authorModelAssembler;
 
-    @Operation(summary = "Get all authors")
+    @Operation(summary = "Get all authors", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieves all requested authors", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Author.class))) })
     })
@@ -40,7 +41,7 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.OK).body(authorModelAssembler.toCollectionModel(authorService.getAuthors()));
     }
 
-    @Operation(summary = "Get an author by id")
+    @Operation(summary = "Get an author by id", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retrieves the author", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Author.class))}),
             @ApiResponse(responseCode = "404", description = "The author does not exists", content = @Content)
@@ -54,7 +55,7 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.OK).body(authorModelAssembler.toModel(authorOptional.get()));
     }
 
-    @Operation(summary = "Store an author")
+    @Operation(summary = "Store an author", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "A new book was created", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Author.class))}),
             @ApiResponse(responseCode = "406", description = "The author's constraints have been violated", content = @Content)
@@ -70,7 +71,7 @@ public class AuthorController {
         }
     }
 
-    @Operation(summary = "Delete an author with a specific id")
+    @Operation(summary = "Delete an author with a specific id", security = @SecurityRequirement(name = "TokenAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "The author was deleted successfully", content = @Content),
             @ApiResponse(responseCode = "404", description = "The author does not exists", content = @Content)

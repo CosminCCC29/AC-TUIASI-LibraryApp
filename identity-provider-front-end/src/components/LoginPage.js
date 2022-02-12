@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import LoginForm from './LoginForm';
 
 class LoginPage extends React.Component {
     
@@ -9,7 +10,10 @@ class LoginPage extends React.Component {
 
     render() {
         return (
-            <h1>Library app login page</h1>            
+            <>
+            <h2> Login form </h2>           
+            <LoginForm />
+            </>
         )
     }
 }

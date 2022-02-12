@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /*
     DTO class for user account
@@ -17,8 +15,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "accounts")
 public class Account {
+
     @Id
-    private Integer id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
     private String email;
     private String password;
     private String role;
